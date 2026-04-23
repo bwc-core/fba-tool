@@ -817,6 +817,10 @@ const loginRequest = {
   scopes: ['User.Read', 'Sites.ReadWrite.All']
 };
 
+const spRequest = {
+  scopes: ['https://bellweather.sharepoint.com/AllSites.Write']
+};
+
 // ── STATE ────────────────────────────────────────────────────
 let currentUser = null;
 let staffData = [];
@@ -866,12 +870,14 @@ async function signIn() {
 async function getToken() {
   try {
     const response = await msalInstance.acquireTokenSilent({
-      ...loginRequest,
+      scopes: ['https://bellweather.sharepoint.com/AllSites.Write'],
       account: currentUser
     });
     return response.accessToken;
   } catch (err) {
-    const response = await msalInstance.acquireTokenPopup(loginRequest);
+    const response = await msalInstance.acquireTokenPopup({
+      scopes: ['https://bellweather.sharepoint.com/AllSites.Write']
+    });
     return response.accessToken;
   }
 }
