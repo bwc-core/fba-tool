@@ -875,10 +875,11 @@ async function getToken() {
     });
     return response.accessToken;
   } catch (err) {
-    const response = await msalInstance.acquireTokenPopup({
-      scopes: ['https://bellweather.sharepoint.com/AllSites.Write']
+    // Fall back to redirect instead of popup to avoid interaction conflicts
+    await msalInstance.acquireTokenRedirect({
+      scopes: ['https://bellweather.sharepoint.com/AllSites.Write'],
+      account: currentUser
     });
-    return response.accessToken;
   }
 }
 
